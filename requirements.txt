@@ -1,0 +1,7 @@
+streamlit
+pandas
+tabula-py
+camelot-py[cv]
+openpyxl
+xlsxwriter
+PyPDF2

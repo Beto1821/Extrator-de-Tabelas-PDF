@@ -1,0 +1,20 @@
+# Arquivos de Bytecode e Cache do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambientes Virtuais
+.venv/
+venv/
+env/
+
+# Pasta de arquivos temporários da aplicação
+temp_files/
+
+# Configurações de IDE
+.vscode/
+.idea/
+
+# Arquivos específicos de Sistema Operacional
+.DS_Store
