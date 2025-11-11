@@ -1,123 +1,62 @@
+# 🚀 Extrator de Tabelas de PDF
 
-# 📊 Extrator de Tabelas PDF
+<p align="center"><img src="public/pumper.png" width="200"></p>
 
-Aplicativo para extrair tabelas de arquivos PDF e convertê-las para Excel de forma automatizada.
+Uma ferramenta de uso pessoal para extrair tabelas de arquivos PDF de forma rápida e convertê-las para o formato Excel.
 
-## 🚀 Funcionalidades
+## Descrição
 
-- ✅ **Múltiplos métodos de extração**: Usa Camelot e Tabula para máxima compatibilidade
-- ✅ **Interface amigável**: Interface web com Streamlit
-- ✅ **Configuração flexível**: Defina os nomes das colunas da tabela
-- ✅ **Exportação para Excel**: Salva os resultados em formato .xlsx
-- ✅ **Debug automático**: Mostra informações detalhadas sobre tabelas encontradas
+Este projeto é uma aplicação web simples construída para facilitar a extração de dados tabulares de documentos PDF. A interface permite que o usuário faça o upload de um arquivo, especifique o número e os nomes das colunas da tabela desejada e, com um clique, extraia os dados e faça o download de um arquivo Excel formatado.
 
-## 📋 Instalação
+Foi desenvolvida para agilizar tarefas do dia a dia que envolvem a cópia manual de informações de PDFs para planilhas.
 
-1. **Clone ou baixe os arquivos**
+**Este projeto é de código aberto, totalmente gratuito e não possui fins lucrativos.**
 
-2. **Instale as dependências:**
+![Screenshot da Aplicação](https://i.imgur.com/V234d9k.png)
+## Ferramentas Utilizadas
+
+*   **Front-end:** [Streamlit](https://streamlit.io/)
+*   **Extração de PDF:** [Tabula-py](https://github.com/chezou/tabula-py)
+*   **Manipulação de Dados:** [Pandas](https://pandas.pydata.org/)
+*   **Geração de Excel:** [XlsxWriter](https://xlsxwriter.readthedocs.io/)
+
+## Como Executar Localmente
+
+Siga os passos abaixo para configurar e executar o projeto em sua máquina.
+
+### 1. Pré-requisitos
+
+*   **Python 3.8+**
+*   **Java:** A biblioteca `tabula-py` depende do Java. Para verificar se você tem o Java instalado, abra o terminal e execute:
+    ```bash
+    java -version
+    ```
+    Se o comando não for encontrado, você precisará instalar o Java.
+
+### 2. Instalação
+
+1.  **Clone o repositório** (ou simplesmente baixe os arquivos para uma pasta em seu computador).
+
+2.  **Crie um ambiente virtual** (recomendado para isolar as dependências do projeto):
+    ```bash
+    python -m venv .venv
+    ```
+
+3.  **Ative o ambiente virtual:**
+    *   No Windows: `.\.venv\Scripts\activate`
+    *   No macOS/Linux: `source .venv/bin/activate`
+
+4.  **Instale as dependências** a partir do arquivo `requirements.txt`:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+### 3. Execução
+
+Com o ambiente virtual ativado e as dependências instaladas, execute o seguinte comando no terminal:
+
 ```bash
-pip3 install -r requirements.txt
+streamlit run app_ui.py
 ```
 
-3. **Execute o aplicativo:**
-```bash
-python3 -m streamlit run app_ui.py
-```
-
-## 💡 Como usar
-
-### Interface Web (Recomendado)
-
-1. Execute `python3 -m streamlit run app_ui.py`
-2. Acesse http://localhost:8501 no navegador
-3. Faça upload do arquivo PDF
-4. Informe o número de colunas esperado na tabela
-5. Digite o nome de cada coluna
-6. Clique em "Extrair Tabelas"
-7. Baixe o arquivo Excel gerado
-
-### Linha de Comando
-
-```bash
-python3 app.py
-```
-
-## 📝 Exemplo de uso
-
-Para o PDF anexado (Planilha de Preço Estimado), use:
-
-- **Número de colunas**: 6
-- **Nomes das colunas**:
-  - Item
-  - Descrição
-  - Unid.
-  - Quant.
-  - Vlr. Unit.
-  - Vlr. Total
-
-## 🔧 Dependências
-
-- `streamlit`: Interface web
-- `pandas`: Manipulação de dados
-- `tabula-py`: Extração de tabelas (método principal)
-- `camelot-py[cv]`: Extração avançada de tabelas
-- `openpyxl`: Geração de arquivos Excel
-- `xlsxwriter`: Formatação de Excel
-
-## 🛠️ Melhorias implementadas
-
-1. **Múltiplos métodos de extração**: Camelot + Tabula para maior compatibilidade
-2. **Configurações automáticas**: Testa diferentes parâmetros automaticamente
-3. **🆕 Remoção de cabeçalhos duplicados**: Remove automaticamente cabeçalhos que se repetem em cada página
-4. **Debug detalhado**: Mostra estrutura das tabelas encontradas para troubleshooting
-5. **Tratamento de erros**: Recuperação graceful quando um método falha
-6. **Interface melhorada**: Streamlit com upload de arquivos
-
-### ✨ Novas Funcionalidades:
-
-#### 🧹 Limpeza Inteligente de Dados
-- ✅ **Remoção de Cabeçalhos Duplicados**: Remove cabeçalhos repetidos em cada página
-- ✅ **🆕 Consolidação de Linhas Quebradas**: Junta descrições longas que foram quebradas em múltiplas linhas
-- ✅ **Preservação de Dados**: Não perde informações importantes durante a limpeza
-- ✅ **Logs detalhados**: Mostra exatamente o que foi processado
-
-#### 🎨 Interface Visual Melhorada
-- ✅ **🛢️ Imagem personalizada**: Logo do pumper.png na aba, barra lateral e área central
-- ✅ **Design profissional**: Cores e estilos personalizados
-- ✅ **Instruções visuais**: Guia completo na tela inicial
-- ✅ **Barra de progresso**: Acompanhe o processo com porcentagem em tempo real
-- ✅ **Validações inteligentes**: Alertas quando PDF não é carregado ou campos vazios
-- ✅ **Estatísticas do resultado**: Métricas dos dados extraídos
-- ✅ **Mensagens informativas**: Dicas de troubleshooting e ajuda
-
-## 🐛 Troubleshooting
-
-**Problema**: "Nenhuma tabela encontrada"
-
-**Soluções**:
-1. Verifique se o PDF contém tabelas com bordas visíveis
-2. Confirme se o número de colunas está correto
-3. Verifique os logs no terminal para mais detalhes
-4. Teste com diferentes configurações (o app faz isso automaticamente)
-
-**Problema**: "Tabela com número incorreto de colunas"
-
-**Soluções**:
-1. Conte as colunas manualmente no PDF
-2. Verifique se há colunas vazias ou mescladas
-3. Analise o output de debug para ver a estrutura real
-
-## 📞 Suporte
-
-Se ainda houver problemas:
-1. Verifique os logs detalhados no terminal
-2. Teste primeiro com um PDF mais simples
-3. Considere usar ferramentas de OCR se o PDF for digitalizado
-
-## 🎯 Status
-
-✅ **Funcionando**: Interface web Streamlit
-✅ **Funcionando**: Extração com múltiplos métodos
-✅ **Funcionando**: Exportação para Excel
-✅ **Funcionando**: Debug e análise de estrutura
+A aplicação será aberta automaticamente em uma nova aba do seu navegador, pronta para uso!

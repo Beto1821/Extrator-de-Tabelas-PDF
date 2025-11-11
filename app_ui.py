@@ -50,6 +50,27 @@ def main():
         border-radius: 15px;
         margin: 1rem 0;
     }
+    /* Estilo para destacar a área de upload */
+    div[data-testid="stFileUploader"] {
+        border: 2px dashed #2E86AB;
+        border-radius: 10px;
+        padding: 20px;
+        background-color: #f0f8ff; /* Cor de fundo suave (AliceBlue) */
+    }
+    div[data-testid="stFileUploader"] > label {
+        font-weight: bold; /* Deixa o texto do label em negrito */
+    }
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #f5f5f5;
+        color: #333;
+        text-align: center;
+        padding: 10px;
+        border-top: 1px solid #e0e0e0;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -67,7 +88,7 @@ def main():
         
         st.header("Configurações de Extração")
 
-        uploaded_file = st.file_uploader("1. Escolha o arquivo PDF", type="pdf")
+        uploaded_file = st.file_uploader("1. Escolha o arquivo PDF", type="pdf", help="Clique para selecionar ou arraste o arquivo PDF aqui.")
 
         num_columns = st.number_input("2. Informe o número de colunas da tabela", min_value=1, value=1, step=1)
 
@@ -204,6 +225,17 @@ def main():
             status_text.empty()
             st.error(f"❌ Erro durante o processamento: {str(e)}")
             st.info("💡 Tente novamente ou verifique o arquivo PDF")
+
+    # --- Rodapé ---
+    st.markdown("""
+    <div class="footer">
+        <p>
+            Created by Adalberto Ribeiro | 
+            <a href="https://www.linkedin.com/in/adalberto-ramos-ribeiro-344092107/" target="_blank">LinkedIn</a> | 
+            <a href="https://github.com/Beto1821/Extrator-de-Tabelas-PDF" target="_blank">GitHub Repository</a>
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
