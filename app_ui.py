@@ -7,10 +7,12 @@ import time
 
 
 def get_theme_css(dark_mode=False):
-    """Retorna o CSS baseado no tema selecionado"""
+    """Retorna o CSS baseado no tema selecionado com cobertura completa"""
     if dark_mode:
         return """
         <style>
+        /* ========== DARK MODE - COBERTURA COMPLETA ========== */
+        
         /* Hide Streamlit header and menu */
         header[data-testid="stHeader"] {
             background: none !important;
@@ -19,6 +21,236 @@ def get_theme_css(dark_mode=False):
         
         .main > div {
             padding-top: 0 !important;
+        }
+        
+        /* Página Principal - 100% Dark */
+        .stApp {
+            background-color: #1E1E1E !important;
+            color: #FFFFFF !important;
+        }
+        
+        /* Main Content Area */
+        .main .block-container {
+            background-color: #1E1E1E !important;
+            color: #FFFFFF !important;
+            padding-bottom: 5rem !important;
+        }
+        
+        /* Headers e Títulos */
+        h1, h2, h3, h4, h5, h6 {
+            color: #FFFFFF !important;
+        }
+        
+        /* Texto geral - COBERTURA EXPANDIDA */
+        p, span, div, label {
+            color: #FFFFFF !important;
+        }
+        
+        /* Spans específicos - Cobertura Streamlit */
+        span[class*="st-emotion-cache"], 
+        span[class*="e16nr0p3"], span[class*="e1nzilvr"],
+        span[class*="css-"], .st-emotion-cache-xm9055,
+        .st-emotion-cache-10trblm, .e16nr0p30 {
+            color: #FFFFFF !important;
+            background-color: transparent !important;
+        }
+        
+        /* Elementos Streamlit dinâmicos - FORÇA BRUTA */
+        [class*="st-emotion-cache"] span,
+        [class*="css-"] span,
+        [class*="e16nr0p"] span,
+        [class*="st-emotion-cache"],
+        [class*="e16nr0p"] {
+            color: #FFFFFF !important;
+            background-color: transparent !important;
+        }
+        
+        /* CSS Global para forçar texto branco */
+        * span, * p, * div, * label {
+            color: #FFFFFF !important;
+        }
+        
+        /* Específico para classes problemáticas */
+        .st-emotion-cache-xm9055, .st-emotion-cache-10trblm,
+        .e16nr0p30, .e16nr0p3 {
+            color: #FFFFFF !important;
+            background: transparent !important;
+        }
+        
+        /* Sidebar COMPLETA - Todos os seletores */
+        .css-1d391kg, .css-1y4p8pa, .css-12oz5g7, 
+        [data-testid="stSidebar"], section[data-testid="stSidebar"],
+        .css-1lcbmhc, .css-17eq0hr {
+            background-color: #2C2C2C !important;
+            color: #FFFFFF !important;
+        }
+        
+        .css-1d391kg > div, .css-1y4p8pa > div,
+        .css-1d391kg .element-container, .css-1y4p8pa .element-container {
+            background-color: #2C2C2C !important;
+            color: #FFFFFF !important;
+        }
+        
+        /* Sidebar Text - TODOS os elementos */
+        .css-1d391kg p, .css-1d391kg span, .css-1d391kg label,
+        .css-1y4p8pa p, .css-1y4p8pa span, .css-1y4p8pa label,
+        section[data-testid="stSidebar"] p, 
+        section[data-testid="stSidebar"] span,
+        section[data-testid="stSidebar"] label,
+        section[data-testid="stSidebar"] [class*="st-emotion-cache"],
+        section[data-testid="stSidebar"] [class*="e16nr0p"] {
+            color: #FFFFFF !important;
+            background-color: transparent !important;
+        }
+        
+        /* File Uploader - COBERTURA COMPLETA */
+        [data-testid="stFileUploader"], 
+        .css-1cpxqw2, .uploadedFile, .css-u8hs99,
+        .css-1x8cf1d, .css-ocqkz7, .css-1kyxreq,
+        div[data-testid="stFileUploader"] > div,
+        div[data-testid="stFileUploader"] > div > div,
+        .stFileUploader, .stFileUploader > div {
+            background-color: #3A3A3A !important;
+            border: 2px dashed #64B5F6 !important;
+            color: #FFFFFF !important;
+            border-radius: 10px !important;
+        }
+        
+        /* File Uploader Labels e Texto */
+        [data-testid="stFileUploader"] label,
+        [data-testid="stFileUploader"] p,
+        [data-testid="stFileUploader"] span,
+        .css-1cpxqw2 label, .css-1cpxqw2 p, .css-1cpxqw2 span,
+        .uploadedFileName, .css-1kyxreq span,
+        .css-ocqkz7 span, .css-1x8cf1d span {
+            color: #FFFFFF !important;
+            background: transparent !important;
+        }
+        
+        /* File Uploader Drop Area */
+        [data-testid="stFileUploader"] > div > div > div,
+        .css-1cpxqw2 > div, .css-u8hs99 > div {
+            background-color: #3A3A3A !important;
+            color: #FFFFFF !important;
+        }
+        
+        /* File Uploader Button */
+        [data-testid="stFileUploader"] button,
+        .css-1cpxqw2 button {
+            background-color: #64B5F6 !important;
+            color: #1E1E1E !important;
+            border: none !important;
+        }
+        
+        /* File Uploader Drag State */
+        [data-testid="stFileUploader"]:hover,
+        .css-1cpxqw2:hover {
+            border-color: #42A5F5 !important;
+            background-color: #4A4A4A !important;
+        }
+        
+        /* Text Inputs */
+        .stTextInput input, input[type="text"], 
+        .css-qrbaxs, .css-1x8cf1d {
+            background-color: #3A3A3A !important;
+            color: #FFFFFF !important;
+            border: 1px solid #555 !important;
+        }
+        
+        /* Number Input */
+        .stNumberInput input, input[type="number"] {
+            background-color: #3A3A3A !important;
+            color: #FFFFFF !important;
+            border: 1px solid #555 !important;
+        }
+        
+        /* Buttons */
+        .stButton button {
+            background-color: #64B5F6 !important;
+            color: #1E1E1E !important;
+            border: none !important;
+            font-weight: bold !important;
+        }
+        
+        .stButton button:hover {
+            background-color: #42A5F5 !important;
+            transform: translateY(-2px) !important;
+        }
+        
+        /* Progress Bar */
+        .stProgress > div > div {
+            background-color: #64B5F6 !important;
+        }
+        
+        /* Metrics */
+        .css-1xarl3l, [data-testid="metric-container"] {
+            background-color: #2A2A2A !important;
+            border: 1px solid #444 !important;
+            color: #FFFFFF !important;
+        }
+        
+        /* Success/Info/Warning Messages */
+        .stAlert, [data-testid="stAlert"] {
+            background-color: #2A2A2A !important;
+            color: #FFFFFF !important;
+            border-left: 4px solid #64B5F6 !important;
+        }
+        
+        /* Dataframe */
+        .stDataFrame, [data-testid="stDataFrame"] {
+            background-color: #2A2A2A !important;
+        }
+        
+        .stDataFrame table, .dataframe {
+            background-color: #2A2A2A !important;
+            color: #FFFFFF !important;
+        }
+        
+        .stDataFrame th, .dataframe th {
+            background-color: #3A3A3A !important;
+            color: #FFFFFF !important;
+        }
+        
+        .stDataFrame td, .dataframe td {
+            background-color: #2A2A2A !important;
+            color: #FFFFFF !important;
+        }
+        
+        /* Download Button */
+        .stDownloadButton button {
+            background-color: #4CAF50 !important;
+            color: white !important;
+        }
+        
+        /* Expander */
+        .streamlit-expanderHeader {
+            background-color: #3A3A3A !important;
+            color: #FFFFFF !important;
+        }
+        
+        .streamlit-expanderContent {
+            background-color: #2A2A2A !important;
+            color: #FFFFFF !important;
+        }
+        
+        /* Code blocks */
+        .stCode, code {
+            background-color: #2A2A2A !important;
+            color: #64B5F6 !important;
+        }
+        
+        /* Markdown */
+        .stMarkdown {
+            color: #FFFFFF !important;
+        }
+        
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            background-color: #2C2C2C !important;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background-color: #555 !important;
         }
         
         /* Custom header */
@@ -51,10 +283,10 @@ def get_theme_css(dark_mode=False):
         .header-icon {
             font-size: 3rem;
             text-shadow: 0 0 20px rgba(100, 181, 246, 0.3);
-            animation: pulse 2s ease-in-out infinite alternate;
+            animation: pulseDark 2s ease-in-out infinite alternate;
         }
         
-        @keyframes pulse {
+        @keyframes pulseDark {
             from { transform: scale(1); }
             to { transform: scale(1.1); }
         }
@@ -98,6 +330,8 @@ def get_theme_css(dark_mode=False):
     else:
         return """
         <style>
+        /* ========== LIGHT MODE - MELHORADO ========== */
+        
         /* Hide Streamlit header and menu */
         header[data-testid="stHeader"] {
             background: none !important;
@@ -106,6 +340,11 @@ def get_theme_css(dark_mode=False):
         
         .main > div {
             padding-top: 0 !important;
+        }
+        
+        /* Main Content Area */
+        .main .block-container {
+            padding-bottom: 5rem !important;
         }
         
         /* Custom header */
