@@ -6,214 +6,179 @@ from app import extract_tables_from_pdf
 import time
 
 
-def get_theme_css(is_dark_mode: bool) -> str:
-    """
-    Retorna CSS personalizado baseado no tema selecionado.
-    """
-    if is_dark_mode:
+def get_theme_css(dark_mode=False):
+    """Retorna o CSS baseado no tema selecionado"""
+    if dark_mode:
         return """
         <style>
-        /* Dark Mode Styles */
-        .stApp {
-            background-color: #1E1E1E;
-            color: #FFFFFF;
+        /* Hide Streamlit header and menu */
+        header[data-testid="stHeader"] {
+            background: none !important;
+            height: 0 !important;
         }
         
-        .main-header {
-            color: #64B5F6;
-            text-align: center;
+        .main > div {
+            padding-top: 0 !important;
+        }
+        
+        /* Custom header */
+        .custom-header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             padding: 1rem 0;
+            margin: -1rem -1rem 2rem -1rem;
+            text-align: center;
+            border-bottom: 3px solid #64B5F6;
+            box-shadow: 0 2px 10px rgba(100, 181, 246, 0.2);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header-title {
+            color: #64B5F6;
             font-size: 2.5rem;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(100, 181, 246, 0.3);
+            text-shadow: 0 0 15px rgba(100, 181, 246, 0.4);
+            margin: 0;
+        }
+        
+        .header-icon {
+            font-size: 3rem;
+            text-shadow: 0 0 20px rgba(100, 181, 246, 0.3);
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
         }
         
         .subtitle {
             text-align: center;
             color: #B0BEC5;
             font-size: 1.1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .pumper-container {
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
-            border-radius: 15px;
-            margin: 1rem 0;
-            border: 1px solid #444;
-        }
-        
-        /* Sidebar Dark Mode - Ultra specific targeting */
-        .stApp > div.css-1d391kg,
-        .stApp section[data-testid="stSidebar"],
-        section[data-testid="stSidebar"],
-        section[data-testid="stSidebar"] > div,
-        section[data-testid="stSidebar"] div,
-        div[data-testid="stSidebar"],
-        div[data-testid="stSidebar"] > div {
-            background: #2C2C2C !important;
-            background-color: #2C2C2C !important;
-        }
-        
-        /* Sidebar container classes - current Streamlit version */
-        .css-1d391kg, .css-1lcbmhc, .css-1n76uvr, 
-        .css-ng1t4o, .css-17eq0hr, .css-6qob1r,
-        .css-1rs6os, .css-17ziqus, .css-1aumxhk {
-            background: #2C2C2C !important;
-            background-color: #2C2C2C !important;
-        }
-        
-        /* Override any white backgrounds in sidebar */
-        section[data-testid="stSidebar"] * {
-            background-color: transparent !important;
-        }
-        
-        section[data-testid="stSidebar"] > div > div {
-            background-color: #2C2C2C !important;
-        }
-        
-        /* Text and labels in sidebar */
-        section[data-testid="stSidebar"] h1,
-        section[data-testid="stSidebar"] h2,
-        section[data-testid="stSidebar"] h3,
-        section[data-testid="stSidebar"] label,
-        section[data-testid="stSidebar"] p,
-        section[data-testid="stSidebar"] span {
-            color: #FFFFFF !important;
-        }
-        
-        /* Input fields in sidebar */
-        section[data-testid="stSidebar"] input,
-        section[data-testid="stSidebar"] textarea,
-        section[data-testid="stSidebar"] select {
-            background-color: #3A3A3A !important;
-            color: #FFFFFF !important;
-            border: 1px solid #555 !important;
-        }
-        
-        /* File Uploader Dark Mode */
-        div[data-testid="stFileUploader"] {
-            border: 2px dashed #64B5F6;
-            border-radius: 10px;
-            padding: 20px;
-            background-color: #2C2C2C;
-        }
-        
-        /* Buttons Dark Mode */
-        .stButton > button {
-            background: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .stButton > button:hover {
-            background: linear-gradient(135deg, #42A5F5 0%, #2196F3 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(100, 181, 246, 0.4);
-        }
-        
-        /* Progress Bar Dark Mode */
-        .stProgress > div > div {
-            background: linear-gradient(90deg, #64B5F6, #42A5F5);
-        }
-        
-        /* Metrics Dark Mode */
-        div[data-testid="metric-container"] {
-            background-color: #2C2C2C;
-            border: 1px solid #444;
-            border-radius: 8px;
+            margin: -1rem 0 2rem 0;
             padding: 1rem;
+            background: rgba(100, 181, 246, 0.1);
+            border-radius: 10px;
         }
         
-        /* DataFrames Dark Mode */
-        .dataframe {
-            background-color: #2C2C2C;
-            color: #FFFFFF;
-        }
-        
-        /* Toggle Switch */
-        .theme-toggle {
+        /* Footer Dark Mode */
+        .footer {
             position: fixed;
-            top: 1rem;
-            right: 1rem;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #B0BEC5;
+            text-align: center;
+            padding: 10px 0;
+            border-top: 2px solid #64B5F6;
             z-index: 999;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .footer a {
+            color: #64B5F6;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .footer a:hover {
+            text-shadow: 0 0 5px rgba(100, 181, 246, 0.8);
         }
         </style>
         """
     else:
         return """
         <style>
-        /* Light Mode Styles */
-        .main-header {
-            color: #2E86AB;
-            text-align: center;
+        /* Hide Streamlit header and menu */
+        header[data-testid="stHeader"] {
+            background: none !important;
+            height: 0 !important;
+        }
+        
+        .main > div {
+            padding-top: 0 !important;
+        }
+        
+        /* Custom header */
+        .custom-header {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             padding: 1rem 0;
+            margin: -1rem -1rem 2rem -1rem;
+            text-align: center;
+            border-bottom: 3px solid #2E86AB;
+            box-shadow: 0 2px 10px rgba(46, 134, 171, 0.3);
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .header-title {
+            color: #2E86AB;
             font-size: 2.5rem;
             font-weight: bold;
             text-shadow: 0 0 10px rgba(46, 134, 171, 0.2);
+            margin: 0;
+        }
+        
+        .header-icon {
+            font-size: 3rem;
+            text-shadow: 0 0 20px rgba(46, 134, 171, 0.2);
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
         }
         
         .subtitle {
             text-align: center;
             color: #666;
             font-size: 1.1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .pumper-container {
-            text-align: center;
-            padding: 2rem;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            border-radius: 15px;
-            margin: 1rem 0;
-            box-shadow: 0 4px 15px rgba(46, 134, 171, 0.1);
-        }
-        
-        /* File Uploader Light Mode */
-        div[data-testid="stFileUploader"] {
-            border: 2px dashed #2E86AB;
-            border-radius: 10px;
-            padding: 20px;
-            background-color: #f0f8ff;
-        }
-        
-        /* Buttons Light Mode */
-        .stButton > button {
-            background: linear-gradient(135deg, #2E86AB 0%, #1976D2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        .stButton > button:hover {
-            background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(46, 134, 171, 0.4);
-        }
-        
-        /* Progress Bar Light Mode */
-        .stProgress > div > div {
-            background: linear-gradient(90deg, #2E86AB, #1976D2);
-        }
-        
-        /* Metrics Light Mode */
-        div[data-testid="metric-container"] {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
+            margin: -1rem 0 2rem 0;
             padding: 1rem;
+            background: rgba(46, 134, 171, 0.1);
+            border-radius: 10px;
         }
         
-        /* Toggle Switch */
-        .theme-toggle {
+        /* Footer Light Mode */
+        .footer {
             position: fixed;
-            top: 1rem;
-            right: 1rem;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            text-align: center;
+            padding: 10px 0;
+            border-top: 2px solid #2E86AB;
             z-index: 999;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .footer a {
+            color: #2E86AB;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .footer a:hover {
+            text-shadow: 0 0 5px rgba(46, 134, 171, 0.6);
         }
         </style>
         """
@@ -249,8 +214,22 @@ def main():
     theme_css = get_theme_css(st.session_state.dark_mode)
     st.markdown(theme_css, unsafe_allow_html=True)
 
-    st.markdown('<h1 class="main-header">🚀 Extrator de Tabelas PDF</h1>', unsafe_allow_html=True)
-    st.markdown('<p class="subtitle">Faça o upload de um arquivo PDF e configure as colunas para extrair tabelas automaticamente</p>', unsafe_allow_html=True)
+    # Header customizado com ícones antes e depois do título
+    st.markdown("""
+    <div class="custom-header">
+        <div class="header-content">
+            <div class="header-icon">🏗️</div>
+            <h1 class="header-title">Extrator de Tabelas PDF</h1>
+            <div class="header-icon">📊</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    st.markdown(
+        '<p class="subtitle">Faça o upload de um arquivo PDF e configure '
+        'as colunas para extrair tabelas automaticamente</p>',
+        unsafe_allow_html=True
+    )
 
     # --- Coluna da Esquerda: Inputs do Usuário ---
     with st.sidebar:
