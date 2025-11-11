@@ -65,16 +65,38 @@ def get_theme_css(dark_mode=False):
             background-color: transparent !important;
         }
         
-        /* CSS Global para forçar texto branco */
-        * span, * p, * div, * label {
+        /* CSS ULTRA-AGRESSIVO para todos os elementos */
+        * span, * p, * div, * label, * h1, * h2, * h3, * h4, * h5, * h6 {
+            color: #FFFFFF !important;
+        }
+        
+        /* DIVs específicos - Cobertura total */
+        div, div[class*="st-"], div[class*="css-"], 
+        div[class*="element-container"], div[class*="block-container"],
+        div[data-testid], .stApp div, .main div {
+            color: #FFFFFF !important;
+        }
+        
+        /* Forçar background escuro em containers */
+        div[class*="st-emotion-cache"], div[class*="element-container"],
+        div[class*="block-container"], .css-k1vhr4, .css-12oz5g7 {
+            background-color: #1E1E1E !important;
             color: #FFFFFF !important;
         }
         
         /* Específico para classes problemáticas */
         .st-emotion-cache-xm9055, .st-emotion-cache-10trblm,
-        .e16nr0p30, .e16nr0p3 {
+        .e16nr0p30, .e16nr0p3, .css-1y4p8pa, .css-k1vhr4 {
             color: #FFFFFF !important;
-            background: transparent !important;
+            background-color: #1E1E1E !important;
+        }
+        
+        /* Containers de conteúdo principais */
+        .css-1d391kg, .css-12oz5g7, .css-k1vhr4,
+        [data-testid="stVerticalBlock"], 
+        [data-testid="element-container"] {
+            background-color: #1E1E1E !important;
+            color: #FFFFFF !important;
         }
         
         /* Sidebar COMPLETA - Todos os seletores */
@@ -222,14 +244,32 @@ def get_theme_css(dark_mode=False):
             color: white !important;
         }
         
-        /* Expander */
-        .streamlit-expanderHeader {
+        /* Expander e Containers Informativos */
+        .streamlit-expanderHeader, [data-testid="stExpanderToggleIcon"],
+        div[data-testid="stExpander"] {
             background-color: #3A3A3A !important;
             color: #FFFFFF !important;
         }
         
-        .streamlit-expanderContent {
+        .streamlit-expanderContent, 
+        div[data-testid="stExpander"] > div,
+        .element-container div {
             background-color: #2A2A2A !important;
+            color: #FFFFFF !important;
+        }
+        
+        /* Containers de informação e conteúdo */
+        .css-1kyxreq, .css-ocqkz7, .css-1x8cf1d,
+        .block-container div, .element-container div,
+        div[class*="stVerticalBlock"], div[class*="stHorizontalBlock"] {
+            background-color: #1E1E1E !important;
+            color: #FFFFFF !important;
+        }
+        
+        /* Elementos de texto em containers */
+        .element-container p, .element-container span,
+        .element-container div, .block-container p,
+        .block-container span, .block-container div {
             color: #FFFFFF !important;
         }
         
