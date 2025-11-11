@@ -3,6 +3,220 @@ import pandas as pd
 import os
 from io import BytesIO
 from app import extract_tables_from_pdf
+import time
+
+
+def get_theme_css(is_dark_mode: bool) -> str:
+    """
+    Retorna CSS personalizado baseado no tema selecionado.
+    """
+    if is_dark_mode:
+        return """
+        <style>
+        /* Dark Mode Styles */
+        .stApp {
+            background-color: #1E1E1E;
+            color: #FFFFFF;
+        }
+        
+        .main-header {
+            color: #64B5F6;
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(100, 181, 246, 0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #B0BEC5;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .pumper-container {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+            border-radius: 15px;
+            margin: 1rem 0;
+            border: 1px solid #444;
+        }
+        
+        /* Sidebar Dark Mode - Ultra specific targeting */
+        .stApp > div.css-1d391kg,
+        .stApp section[data-testid="stSidebar"],
+        section[data-testid="stSidebar"],
+        section[data-testid="stSidebar"] > div,
+        section[data-testid="stSidebar"] div,
+        div[data-testid="stSidebar"],
+        div[data-testid="stSidebar"] > div {
+            background: #2C2C2C !important;
+            background-color: #2C2C2C !important;
+        }
+        
+        /* Sidebar container classes - current Streamlit version */
+        .css-1d391kg, .css-1lcbmhc, .css-1n76uvr, 
+        .css-ng1t4o, .css-17eq0hr, .css-6qob1r,
+        .css-1rs6os, .css-17ziqus, .css-1aumxhk {
+            background: #2C2C2C !important;
+            background-color: #2C2C2C !important;
+        }
+        
+        /* Override any white backgrounds in sidebar */
+        section[data-testid="stSidebar"] * {
+            background-color: transparent !important;
+        }
+        
+        section[data-testid="stSidebar"] > div > div {
+            background-color: #2C2C2C !important;
+        }
+        
+        /* Text and labels in sidebar */
+        section[data-testid="stSidebar"] h1,
+        section[data-testid="stSidebar"] h2,
+        section[data-testid="stSidebar"] h3,
+        section[data-testid="stSidebar"] label,
+        section[data-testid="stSidebar"] p,
+        section[data-testid="stSidebar"] span {
+            color: #FFFFFF !important;
+        }
+        
+        /* Input fields in sidebar */
+        section[data-testid="stSidebar"] input,
+        section[data-testid="stSidebar"] textarea,
+        section[data-testid="stSidebar"] select {
+            background-color: #3A3A3A !important;
+            color: #FFFFFF !important;
+            border: 1px solid #555 !important;
+        }
+        
+        /* File Uploader Dark Mode */
+        div[data-testid="stFileUploader"] {
+            border: 2px dashed #64B5F6;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #2C2C2C;
+        }
+        
+        /* Buttons Dark Mode */
+        .stButton > button {
+            background: linear-gradient(135deg, #64B5F6 0%, #42A5F5 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .stButton > button:hover {
+            background: linear-gradient(135deg, #42A5F5 0%, #2196F3 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(100, 181, 246, 0.4);
+        }
+        
+        /* Progress Bar Dark Mode */
+        .stProgress > div > div {
+            background: linear-gradient(90deg, #64B5F6, #42A5F5);
+        }
+        
+        /* Metrics Dark Mode */
+        div[data-testid="metric-container"] {
+            background-color: #2C2C2C;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        /* DataFrames Dark Mode */
+        .dataframe {
+            background-color: #2C2C2C;
+            color: #FFFFFF;
+        }
+        
+        /* Toggle Switch */
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 999;
+        }
+        </style>
+        """
+    else:
+        return """
+        <style>
+        /* Light Mode Styles */
+        .main-header {
+            color: #2E86AB;
+            text-align: center;
+            padding: 1rem 0;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(46, 134, 171, 0.2);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .pumper-container {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            margin: 1rem 0;
+            box-shadow: 0 4px 15px rgba(46, 134, 171, 0.1);
+        }
+        
+        /* File Uploader Light Mode */
+        div[data-testid="stFileUploader"] {
+            border: 2px dashed #2E86AB;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f0f8ff;
+        }
+        
+        /* Buttons Light Mode */
+        .stButton > button {
+            background: linear-gradient(135deg, #2E86AB 0%, #1976D2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .stButton > button:hover {
+            background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(46, 134, 171, 0.4);
+        }
+        
+        /* Progress Bar Light Mode */
+        .stProgress > div > div {
+            background: linear-gradient(90deg, #2E86AB, #1976D2);
+        }
+        
+        /* Metrics Light Mode */
+        div[data-testid="metric-container"] {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        /* Toggle Switch */
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 999;
+        }
+        </style>
+        """
 
 
 def to_excel(df: pd.DataFrame) -> bytes:
@@ -27,52 +241,13 @@ def main():
         layout="wide"
     )
 
-    # Estilo personalizado
-    st.markdown("""
-    <style>
-    .main-header {
-        color: #2E86AB;
-        text-align: center;
-        padding: 1rem 0;
-        font-size: 2.5rem;
-        font-weight: bold;
-    }
-    .subtitle {
-        text-align: center;
-        color: #666;
-        font-size: 1.1rem;
-        margin-bottom: 2rem;
-    }
-    .pumper-container {
-        text-align: center;
-        padding: 2rem;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        border-radius: 15px;
-        margin: 1rem 0;
-    }
-    /* Estilo para destacar a área de upload */
-    div[data-testid="stFileUploader"] {
-        border: 2px dashed #2E86AB;
-        border-radius: 10px;
-        padding: 20px;
-        background-color: #f0f8ff; /* Cor de fundo suave (AliceBlue) */
-    }
-    div[data-testid="stFileUploader"] > label {
-        font-weight: bold; /* Deixa o texto do label em negrito */
-    }
-    .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: #f5f5f5;
-        color: #333;
-        text-align: center;
-        padding: 10px;
-        border-top: 1px solid #e0e0e0;
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    # Inicialização do state para dark mode
+    if 'dark_mode' not in st.session_state:
+        st.session_state.dark_mode = False
+
+    # Aplicar CSS baseado no tema
+    theme_css = get_theme_css(st.session_state.dark_mode)
+    st.markdown(theme_css, unsafe_allow_html=True)
 
     st.markdown('<h1 class="main-header">🚀 Extrator de Tabelas PDF</h1>', unsafe_allow_html=True)
     st.markdown('<p class="subtitle">Faça o upload de um arquivo PDF e configure as colunas para extrair tabelas automaticamente</p>', unsafe_allow_html=True)
@@ -86,6 +261,26 @@ def main():
             caption="PDF Table Extractor"
         )
         
+        # Toggle de dark mode
+        st.markdown("---")
+        col1, col2 = st.columns([1, 2])
+        with col1:
+            st.markdown("🎨")
+        with col2:
+            dark_mode_text = ("🌙 Dark Mode" if not st.session_state.dark_mode
+                              else "☀️ Light Mode")
+            if st.button(dark_mode_text, key="theme_toggle"):
+                st.session_state.dark_mode = not st.session_state.dark_mode
+                # Compatibilidade com diferentes versões do Streamlit
+                try:
+                    st.rerun()
+                except AttributeError:
+                    try:
+                        st.experimental_rerun()
+                    except AttributeError:
+                        st.info("🔄 Tema alterado! Recarregue a página.")
+        
+        st.markdown("---")
         st.header("Configurações de Extração")
 
         uploaded_file = st.file_uploader("1. Escolha o arquivo PDF", type="pdf", help="Clique para selecionar ou arraste o arquivo PDF aqui.")
@@ -98,7 +293,7 @@ def main():
             col_name = st.text_input(f"Nome da Coluna {i+1}", key=f"col_{i}")
             column_names.append(col_name)
 
-        extract_button = st.button("Extrair Tabelas", type="primary", width="stretch")
+        extract_button = st.button("Extrair Tabelas", type="primary", use_container_width=True)
 
     # --- Área Principal: Exibição dos Resultados ---
     
@@ -186,7 +381,6 @@ def main():
             progress_bar.progress(100)
             
             # Limpa a barra de progresso após um breve delay
-            import time
             time.sleep(1)
             progress_bar.empty()
             status_text.empty()
@@ -211,7 +405,7 @@ def main():
                     data=excel_bytes, 
                     file_name=f"{os.path.splitext(uploaded_file.name)[0]}_formatado.xlsx", 
                     mime="application/vnd.ms-excel", 
-                    width="stretch"
+                    use_container_width=True
                 )
             else:
                 st.error("❌ Não foi possível extrair tabelas do PDF.")

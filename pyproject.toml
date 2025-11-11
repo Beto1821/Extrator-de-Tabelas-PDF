@@ -1,0 +1,48 @@
+[tool.pytest.ini_options]
+minversion = "6.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+# Marcadores personalizados
+markers = [
+    "unit: marca testes unitários rápidos",
+    "integration: marca testes de integração",
+    "performance: marca testes de performance/benchmark", 
+    "slow: marca testes que demoram para executar",
+    "ui: marca testes de interface do usuário",
+    "benchmark: marca testes de benchmark específicos"
+]
+
+# Configurações de cobertura
+addopts = [
+    "--strict-markers",
+    "--strict-config", 
+    "--cov=app",
+    "--cov=app_ui",
+    "--cov-report=html:htmlcov",
+    "--cov-report=term-missing",
+    "--cov-report=xml",
+    "--cov-fail-under=80",
+    "-ra",
+    "--tb=short"
+]
+
+# Filtros para warnings
+filterwarnings = [
+    "ignore::UserWarning",
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning"
+]
+
+# Configurações específicas
+console_output_style = "progress"
+junit_family = "xunit2"
+log_cli = true
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)8s] %(message)s"
+log_cli_date_format = "%Y-%m-%d %H:%M:%S"
+
+# Timeout para testes (em segundos)
+timeout = 300

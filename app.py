@@ -99,16 +99,19 @@ def remove_duplicate_headers(df: pd.DataFrame, column_names: list[str]):
         # Converte todos os valores da linha para string
         row_str = ' '.join([str(val) for val in row.values if pd.notna(val)])
         
-        # Lista de palavras-chave dos cabeçalhos
+        # Lista de palavras-chave dos cabeçalhos (flexível)
         header_keywords = ['Item', 'Descrição', 'Unid.', 'Quant.', 
-                          'Vlr. Unit.', 'Vlr. Total']
+                          'Vlr. Unit.', 'Vlr. Total', 'Quantidade', 
+                          'Valor', 'Código', 'Nome', 'Preço', 'Total',
+                          'Qtd', 'Desc', 'ITEM', 'DESCRIÇÃO', 'item',
+                          'descrição', 'quantidade', 'valor']
         
         # Conta quantas palavras-chave do cabeçalho estão presentes
         keyword_count = sum(1 for keyword in header_keywords 
-                          if keyword in row_str)
+                          if keyword.lower() in row_str.lower())
         
-        # Se encontrar 3 ou mais palavras-chave, considera cabeçalho
-        if keyword_count >= 3:
+        # Se encontrar 2 ou mais palavras-chave, considera cabeçalho
+        if keyword_count >= 2:
             rows_to_remove.append(idx)
             print(f"Linha {idx} removida (cabeçalho): {row_str[:100]}...")
     
@@ -135,14 +138,15 @@ def remove_duplicate_headers(df: pd.DataFrame, column_names: list[str]):
     return cleaned_df
 
 
-def extract_tables_from_pdf(pdf_path: str, colunm_names: list[str]):
+def extract_tables_from_pdf(pdf_path: str, column_names: list[str]):
     """
     Extrai tabelas de um PDF e retorna como DataFrame.
     Remove cabeçalhos duplicados automaticamente.
     """
     if not os.path.exists(pdf_path):
         print(f"Erro: Arquivo {pdf_path} não existe.")
-        return None
+        empty_df = pd.DataFrame(columns=column_names)
+        return empty_df
 
     print(f"📄 Extraindo tabelas de: {pdf_path}")
     
@@ -164,8 +168,8 @@ def extract_tables_from_pdf(pdf_path: str, colunm_names: list[str]):
                     df = table.df
                     df = df.dropna(how='all')
                     
-                    if df.shape[1] == len(colunm_names):
-                        df.columns = colunm_names
+                    if df.shape[1] == len(column_names):
+                        df.columns = column_names
                         all_dfs.append(df)
 
                 if all_dfs:
@@ -173,10 +177,10 @@ def extract_tables_from_pdf(pdf_path: str, colunm_names: list[str]):
                     result_df = result_df.dropna(how='all')
                     
                     # Remove cabeçalhos duplicados
-                    result_df = remove_duplicate_headers(result_df, colunm_names)
+                    result_df = remove_duplicate_headers(result_df, column_names)
                     
                     # Consolida linhas quebradas
-                    result_df = consolidate_broken_rows(result_df, colunm_names)
+                    result_df = consolidate_broken_rows(result_df, column_names)
                     
                     print(f"✅ Camelot: {result_df.shape[0]} linhas finais")
                     return result_df
@@ -204,8 +208,8 @@ def extract_tables_from_pdf(pdf_path: str, colunm_names: list[str]):
                     for table in tables:
                         table = table.dropna(how='all')
                         
-                        if table.shape[1] == len(colunm_names):
-                            table.columns = colunm_names
+                        if table.shape[1] == len(column_names):
+                            table.columns = column_names
                             correct_tables.append(table)
                     
                     if correct_tables:
@@ -213,10 +217,10 @@ def extract_tables_from_pdf(pdf_path: str, colunm_names: list[str]):
                         result_df = result_df.dropna(how='all')
                         
                         # Remove cabeçalhos duplicados
-                        result_df = remove_duplicate_headers(result_df, colunm_names)
+                        result_df = remove_duplicate_headers(result_df, column_names)
                         
                         # Consolida linhas quebradas
-                        result_df = consolidate_broken_rows(result_df, colunm_names)
+                        result_df = consolidate_broken_rows(result_df, column_names)
                         
                         print(f"✅ Tabula: {result_df.shape[0]} linhas finais")
                         return result_df
@@ -241,7 +245,10 @@ def extract_tables_from_pdf(pdf_path: str, colunm_names: list[str]):
     except Exception as debug_error:
         print(f"Debug erro: {debug_error}")
     
-    return None
+    # Sempre retornar DataFrame, mesmo que vazio
+    print("❌ Nenhuma tabela encontrada. Retornando DataFrame vazio.")
+    empty_df = pd.DataFrame(columns=column_names)
+    return empty_df
 
 
 def format_excel(dataframe: pd.DataFrame, excel_path: str):
@@ -259,11 +266,11 @@ def main():
     
     pdf_path = input("Caminho do PDF: ").strip()
     cols = input("Colunas (separadas por vírgula): ").strip()
-    colunm_names = [name.strip() for name in cols.split(",")]
+    column_names = [name.strip() for name in cols.split(",")]
 
-    df_table = extract_tables_from_pdf(pdf_path, colunm_names)
+    df_table = extract_tables_from_pdf(pdf_path, column_names)
 
-    if df_table is not None and not df_table.empty:
+    if not df_table.empty:
         name_base = os.path.splitext(os.path.basename(pdf_path))[0]
         excel_output = f"{name_base}_extracted.xlsx"
         format_excel(df_table, excel_output)

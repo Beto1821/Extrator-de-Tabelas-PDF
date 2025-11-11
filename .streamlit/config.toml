@@ -8,6 +8,7 @@ enableXsrfProtection = false
 maxUploadSize = 200
 
 [theme]
+base = "light"
 primaryColor = "#2E86AB"
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F0F2F6"
