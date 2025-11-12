@@ -32,8 +32,6 @@ Uma ferramenta profissional para extrair tabelas de arquivos PDF de forma rápid
 
 **Este projeto é de código aberto, totalmente gratuito e não possui fins lucrativos.**
 
-![Screenshot da Aplicação](https://i.imgur.com/V234d9k.png)
-
 ## 🛠️ Tecnologias Utilizadas
 
 ### **Core**
